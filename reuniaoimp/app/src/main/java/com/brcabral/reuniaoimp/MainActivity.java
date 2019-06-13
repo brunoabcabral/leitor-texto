@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import android.os.Environment;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,7 +17,6 @@ import android.os.Bundle;
 public class MainActivity extends AppCompatActivity {
 
     private TextView arquivo, leitura;
-    private Button importar, carregar;
     private Spinner listar;
     private ArrayList<String> Arquivos = new ArrayList<String>();
 
@@ -31,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
             setContentView(R.layout.activity_main);
             arquivo = (TextView)findViewById(R.id.txtdiretorio);
             leitura = (TextView)findViewById(R.id.txtleitura);
-            listar = (TextView)findViewById(R.id.spnlista);
+            listar = (Spinner) findViewById(R.id.spnlista);
             Listar();
         } catch (Exception e) {
             Mensagem("Erro : " + e.getMessage());
@@ -68,10 +66,10 @@ public class MainActivity extends AppCompatActivity {
         File arq;
         byte[] dados;
         try{
-            lstrNomeArq = importar.getText().toString();
+            lstrNomeArq = arquivo.getText().toString();
             arq = new File(Environment.getExternalStorageDirectory(), lstrNomeArq);
             FileOutputStream fos;
-            dados = importar.getText().toString().getBytes();
+            dados = arquivo.getText().toString().getBytes();
             fos = new FileOutputStream(arq);
             fos.write(dados);
             fos.flush();
@@ -87,19 +85,25 @@ public class MainActivity extends AppCompatActivity {
         String lstrNomeArq;
         File arq;
         String lstrlinha;
-        try(
-                listar = leitura.getSelectedItem().toString();
+        try {
+            lstrNomeArq = listar.getSelectedItem().toString();
+            leitura.setText("");
+            arq = new File(Environment.getExternalStorageDirectory(), lstrNomeArq);
             BufferedReader br = new BufferedReader(new FileReader(arq));
-            while((lstrlinha = br.readLine()) != null){
+
+            while ((lstrlinha = br.readLine()) != null) {
                 if (!leitura.getText().toString().equals("")) {
-                    leitura.append(lstrlinha);
+                    leitura.append("\n");
                 }
-                Mensagem("Carregado");
+                leitura.append(lstrlinha);
             }
-            try (Exception e){
-                Mensagem("Erro" + e.getMessage());
-            }
-        )
+            Mensagem("Carregado");
+
+        }
+        catch (Exception e) {
+            Mensagem("Erro" + e.getMessage());
+        }
+
     }
 
 }
