@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Confteste</string>
+    <string name="retorno">retorno</string>
+    <string name="novo">novo</string>
+    <string name="listar">listar</string>
+    <string name="deletar">deletar</string>
+    <string name="salvar">salvar</string>
+    <string name="tempo">tempo</string>
+    <string name="nome">nome</string>
+</resources>
