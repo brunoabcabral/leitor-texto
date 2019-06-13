@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">reuniaoimp</string>
+    <string name="arquivo">arquivo</string>
+    <string name="textview">TextView</string>
+    <string name="importar">importar</string>
+    <string name="carregar">carregar</string>
+    <string name="leitura">leitura</string>
+    <string name="listar">listar</string>
+    <string name="selecione_arquivo">selecione arquivo</string>
+</resources>
