@@ -16,7 +16,8 @@ import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView arquivo, leitura;
+    private TextView arquivo;
+    private TextView leitura;
     private Spinner listar;
     private ArrayList<String> Arquivos = new ArrayList<String>();
 
