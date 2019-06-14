@@ -1,110 +1,83 @@
 package com.brcabral.reuniaoimp;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.util.ArrayList;
-import android.os.Environment;
+import android.content.Context;
+import android.content.res.AssetManager;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
 
-    private TextView arquivo;
-    private TextView leitura;
-    private Spinner listar;
+    private Button charge;
+    private TextView read;
+    private Context context;
     private ArrayList<String> Arquivos = new ArrayList<String>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-        try {
-            setContentView(R.layout.activity_main);
-            arquivo = (TextView)findViewById(R.id.txtdiretorio);
-            leitura = (TextView)findViewById(R.id.txtleitura);
-            listar = (Spinner) findViewById(R.id.spnlista);
-            Listar();
-        } catch (Exception e) {
-            Mensagem("Erro : " + e.getMessage());
-        }
+        context = this;
+        read = (TextView) findViewById(R.id.txtread);
+        charge = (Button) findViewById(R.id.btncharge);
+        charge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                readAndDisplay();
+            }
+        });
     }
 
-    private void Mensagem (String msg){
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-    }
-    private String ObterDiretorio(){
-        File arquivo  = android.os.Environment.getExternalStorageDirectory();
-        return arquivo .toString();
-    }
+            private void readAndDisplay () {
+                AssetManager mgr = this.context.getAssets();
+                String filename = null;
 
-    public void Listar(){
-        File diretorio = new File (ObterDiretorio());
-        File[] arquivos = diretorio.listFiles();
-        if(arquivos != null){
-            int length = arquivos.length;
-            for(int i = 0; i < length; ++i){
-                File f = arquivos[i];
-                if (f.isFile()){
-                    Arquivos.add(f.getName());
+                try {
+                    filename = "proposals.txt";
+                    System.out.println("filename : " + filename);
+                    InputStream in = mgr.open(filename, AssetManager.ACCESS_BUFFER);
+                    String sHTML = StreamToString(in);
+                    in.close();
+
+                    read.setText(sHTML);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>
-                    (this,android.R.layout.simple_dropdown_item_1line, Arquivos);
-            listar.setAdapter(arrayAdapter);
-        }
-    }
 
-    public void Salvar (View view){
-        String lstrNomeArq;
-        File arq;
-        byte[] dados;
-        try{
-            lstrNomeArq = arquivo.getText().toString();
-            arq = new File(Environment.getExternalStorageDirectory(), lstrNomeArq);
-            FileOutputStream fos;
-            dados = arquivo.getText().toString().getBytes();
-            fos = new FileOutputStream(arq);
-            fos.write(dados);
-            fos.flush();
-            fos.close();
-            Mensagem("Sucesso");
-            Listar();
-        }
-        catch (Exception e){
-            Mensagem("Erro" + e.getMessage());
-        }
-    }
-    public void diretorio (View view){
-        String lstrNomeArq;
-        File arq;
-        String lstrlinha;
-        try {
-            lstrNomeArq = listar.getSelectedItem().toString();
-            leitura.setText("");
-            arq = new File(Environment.getExternalStorageDirectory(), lstrNomeArq);
-            BufferedReader br = new BufferedReader(new FileReader(arq));
-
-            while ((lstrlinha = br.readLine()) != null) {
-                if (!leitura.getText().toString().equals("")) {
-                    leitura.append("\n");
+            private String StreamToString (InputStream in){
+                if (in == null) {
+                    return "";
                 }
-                leitura.append(lstrlinha);
+                Writer writer = new StringWriter();
+                char[] buffer = new char[1024];
+                try {
+                    Reader reader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+                    int n;
+                    while ((n = reader.read(buffer)) != -1) {
+                        writer.write(buffer, 0, n);
+                    }
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                }
+                return writer.toString();
             }
-            Mensagem("Carregado");
-
-        }
-        catch (Exception e) {
-            Mensagem("Erro" + e.getMessage());
-        }
-
-    }
 
 }
+
