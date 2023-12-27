@@ -16,7 +16,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
+/*author Bruno Alexandre botto Cabral alencar*/
 public class MainActivity extends AppCompatActivity {
 
     private Button charge;
