@@ -9,13 +9,13 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.ArrayList;
-import android.content.Context;
-import android.content.res.AssetManager;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import java.content.Context;
+import java.content.res.AssetManager;
+import java.view.View;
+import java.widget.Button;
+import java.widget.TextView;
+import java.support.v7.app.AppCompatActivity;
+import java.os.Bundle;
 /*author Bruno Alexandre botto Cabral alencar*/
 public class MainActivity extends AppCompatActivity {
 
